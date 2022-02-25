@@ -19,11 +19,12 @@ create_user() {
   
 }
 
+export JSON_MENU='[{"key": "a", "title": "add", function: "add" }, {"key": "e", "title": "edit", function: "" }]'
 function users_menu() {
 	echo "OpenVPN Users managment"
-  echo "####################################################"
+  	echo "####################################################"
 	echo "   a) Add a new user"
-  echo "   e) Edit new user"
+  	echo "   e) Edit new user"
 	echo "   2) Revoke existing user"
 	echo "   3) Remove OpenVPN"
 	echo "   4) Exit"
