@@ -4,6 +4,25 @@
 # Secure OpenVPN server installer for Debian, Ubuntu, CentOS, Amazon Linux 2, Fedora, Oracle Linux 8, Arch Linux, Rocky Linux and AlmaLinux.
 # https://github.com/angristan/openvpn-install
 
+init() {
+
+}
+
+apt-get -y install curl wget openvpn unbound
+
+select_config() {
+
+
+	
+	
+}
+
+function tp() {
+
+
+}
+
+
 function isRoot() {
 	if [ "$EUID" -ne 0 ]; then
 		return 1
@@ -781,7 +800,7 @@ persist-tun
 keepalive 10 120
 topology subnet
 server 10.8.0.0 255.255.255.0
-ifconfig-pool-persist ipp.txt" >>/etc/openvpn/server.conf
+ifconfig-pool-persist ipp.txt" >> /etc/openvpn/server.conf
 
 	# DNS resolvers
 	case $DNS in
@@ -922,18 +941,18 @@ verb 3" >>/etc/openvpn/server.conf
 	fi
 
 	# Finally, restart and enable OpenVPN
-	if [[ $OS == 'arch' || $OS == 'fedora' || $OS == 'centos' || $OS == 'oracle' ]]; then
-		# Don't modify package-provided service
-		cp /usr/lib/systemd/system/openvpn-server@.service /etc/systemd/system/openvpn-server@.service
+# 	if [[ $OS == 'arch' || $OS == 'fedora' || $OS == 'centos' || $OS == 'oracle' ]]; then
+# 		# Don't modify package-provided service
+# 		cp /usr/lib/systemd/system/openvpn-server@.service /etc/systemd/system/openvpn-server@.service
 
-		# Workaround to fix OpenVPN service on OpenVZ
-		sed -i 's|LimitNPROC|#LimitNPROC|' /etc/systemd/system/openvpn-server@.service
-		# Another workaround to keep using /etc/openvpn/
-		sed -i 's|/etc/openvpn/server|/etc/openvpn|' /etc/systemd/system/openvpn-server@.service
+# 		# Workaround to fix OpenVPN service on OpenVZ
+# 		sed -i 's|LimitNPROC|#LimitNPROC|' /etc/systemd/system/openvpn-server@.service
+# 		# Another workaround to keep using /etc/openvpn/
+# 		sed -i 's|/etc/openvpn/server|/etc/openvpn|' /etc/systemd/system/openvpn-server@.service
 
-		systemctl daemon-reload
-		systemctl enable openvpn-server@server
-		systemctl restart openvpn-server@server
+# 		systemctl daemon-reload
+# 		systemctl enable openvpn-server@server
+# 		systemctl restart openvpn-server@server
 	elif [[ $OS == "ubuntu" ]] && [[ $VERSION_ID == "16.04" ]]; then
 		# On Ubuntu 16.04, we use the package from the OpenVPN repo
 		# This package uses a sysvinit service
@@ -1008,7 +1027,7 @@ ExecStop=/etc/iptables/rm-openvpn-rules.sh
 RemainAfterExit=yes
 
 [Install]
-WantedBy=multi-user.target" >/etc/systemd/system/iptables-openvpn.service
+WantedBy=multi-user.target" >  /etc/systemd/system/iptables-openvpn.service
 
 	# Enable service and apply rules
 	systemctl daemon-reload
@@ -1300,36 +1319,7 @@ function removeOpenVPN() {
 	fi
 }
 
-function manageMenu() {
-	echo "Welcome to OpenVPN-install!"
-	echo "The git repository is available at: https://github.com/angristan/openvpn-install"
-	echo ""
-	echo "It looks like OpenVPN is already installed."
-	echo ""
-	echo "What do you want to do?"
-	echo "   1) Add a new user"
-	echo "   2) Revoke existing user"
-	echo "   3) Remove OpenVPN"
-	echo "   4) Exit"
-	until [[ $MENU_OPTION =~ ^[1-4]$ ]]; do
-		read -rp "Select an option [1-4]: " MENU_OPTION
-	done
-
-	case $MENU_OPTION in
-	1)
-		newClient
-		;;
-	2)
-		revokeClient
-		;;
-	3)
-		removeOpenVPN
-		;;
-	4)
-		exit 0
-		;;
-	esac
-}
+# . ./menu.sh
 
 # Check for root, TUN, OS...
 initialCheck
