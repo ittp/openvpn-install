@@ -1,0 +1,6 @@
+{
+  "config": "/etc/openvpn/server.conf"
+  "type": "tun",
+  "server": {},
+  "option": {}
+}
